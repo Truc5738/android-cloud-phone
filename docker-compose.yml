@@ -1,0 +1,19 @@
+services:
+  android:
+    image: budtmo/docker-android:emulator_11.0
+    container_name: android-cloud-phone
+    restart: unless-stopped
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    environment:
+      WEB_VNC: "true"
+      EMULATOR_DEVICE: "Samsung Galaxy S10"
+    ports:
+      # Keep the control UI local; use an SSH tunnel or authenticated VPN for remote access.
+      - "127.0.0.1:6080:6080"
+      # Do not publish ADB ports to the public Internet.
+    volumes:
+      # Persist the AVD files and emulator userdata across container restarts.
+      - ./data:/home/androidusr
+    shm_size: "2gb"

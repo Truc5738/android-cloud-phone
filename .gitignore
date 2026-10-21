@@ -1,0 +1,8 @@
+# Android emulator runtime data (can be large and contains private app data)
+data/
+*.log
+
+# Local environment/secrets
+.env
+.env.*
+!.env.example

@@ -1,0 +1,34 @@
+name: Validate Android Cloud Phone configuration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check shell script syntax
+        run: |
+          bash -n scripts/doctor.sh
+          bash -n scripts/backup.sh
+          sh -n scripts/start.sh
+          sh -n scripts/stop.sh
+
+      - name: Validate Docker Compose configuration
+        run: |
+          docker compose -f docker-compose.yml config -q
+          echo "Compose syntax is valid. This job does not launch Android."
+
+      - name: Verify private runtime data is ignored
+        run: |
+          grep -Fx 'data/' .gitignore
+          ! git check-ignore -q --no-index README.md

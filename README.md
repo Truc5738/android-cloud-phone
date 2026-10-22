@@ -17,6 +17,8 @@ Mục tiêu: Android Emulator điều khiển qua trình duyệt, dữ liệu AV
 - `scripts/stop.sh`: dừng container mà không xóa dữ liệu.
 - `scripts/doctor.sh`: kiểm tra Docker, Compose và `/dev/kvm` trước khi chạy.
 - `scripts/backup.sh`: tạo bản sao lưu `data/` sau khi tạm dừng container để giữ dữ liệu nhất quán.
+- `.github/workflows/validate.yml`: kiểm tra cú pháp shell và Docker Compose trên GitHub Actions; workflow này không chạy Android 24/7.
+- `HOSTING.md`: yêu cầu máy chủ, tình trạng triển khai và checklist an toàn.
 
 ## Triển khai trên máy chủ Linux
 

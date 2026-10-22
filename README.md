@@ -15,6 +15,8 @@ Mục tiêu: Android Emulator điều khiển qua trình duyệt, dữ liệu AV
 - `data/`: thư mục dữ liệu AVD được lưu trên máy chủ, không đưa vào Git.
 - `scripts/start.sh`: tạo thư mục dữ liệu và khởi chạy.
 - `scripts/stop.sh`: dừng container mà không xóa dữ liệu.
+- `scripts/doctor.sh`: kiểm tra Docker, Compose và `/dev/kvm` trước khi chạy.
+- `scripts/backup.sh`: tạo bản sao lưu `data/` sau khi tạm dừng container để giữ dữ liệu nhất quán.
 
 ## Triển khai trên máy chủ Linux
 
@@ -25,9 +27,10 @@ Mục tiêu: Android Emulator điều khiển qua trình duyệt, dữ liệu AV
    git clone https://github.com/Truc5738/android-cloud-phone.git
    cd android-cloud-phone
    ```
-4. Khởi động:
+4. Chạy kiểm tra trước, rồi khởi động:
    ```bash
    chmod +x scripts/*.sh
+   ./scripts/doctor.sh
    ./scripts/start.sh
    ```
 5. Mặc định giao diện chỉ bind vào localhost ở cổng 6080 để tránh phơi bày giao diện điều khiển. Tạo SSH tunnel từ thiết bị có hỗ trợ port forwarding:
@@ -46,7 +49,7 @@ Docker Compose đặt `restart: unless-stopped`. Sau khi Docker daemon khởi đ
 - Nếu báo không tìm thấy `/dev/kvm`, máy chủ không có KVM/ảo hóa phù hợp; đổi máy chủ. Không thể sửa bằng GitHub Actions.
 - Nếu emulator không khởi động, xem log: `docker compose logs -f android`.
 - Nếu image/tag không còn được hỗ trợ, kiểm tra tài liệu image upstream trước khi đổi tag.
-- Sao lưu dữ liệu bằng cách dừng container trước, sau đó sao chép thư mục `data/` sang nơi an toàn.
+- Tạo bản sao lưu nhất quán bằng `./scripts/backup.sh` khi container đã được tạo. Lưu tệp backup ở nơi riêng tư vì nó có thể chứa dữ liệu ứng dụng và phiên đăng nhập.
 
 ## Giới hạn
 
